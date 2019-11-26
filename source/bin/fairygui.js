@@ -8141,11 +8141,63 @@ window.fairygui = window.fgui;
             this._popupStack = [];
             this._justClosedPopups = [];
             this.displayObject.once(Laya.Event.DISPLAY, this, this.__addedToStage);
+            this._layer1Obj = this.createLayerNode("Layer_1");
+            this._layer2Obj = this.createLayerNode("Layer_2");
+            this._layer3Obj = this.createLayerNode("Layer_3");
+            this._layer4Obj = this.createLayerNode("Layer_4");
         }
         static get inst() {
             if (GRoot._inst == null)
                 new GRoot();
             return GRoot._inst;
+        }
+        createLayerNode(name) {
+            var layerObj = new fgui.GComponent();
+            layerObj.name = name;
+            this.addChild1(layerObj);
+            return layerObj;
+        }
+        addChild1(child) {
+            super.addChild(child);
+        }
+        AddToUI(child, layer) {
+            if (child == null || layer < 1 || layer > 4) {
+                console.error("AddToUI error");
+            }
+            var gobj;
+            switch (layer) {
+                case GRoot.LAYER_1:
+                    gobj = this._layer1Obj.addChild(child);
+                    break;
+                case GRoot.LAYER_2:
+                    gobj = this._layer2Obj.addChild(child);
+                    break;
+                case GRoot.LAYER_3:
+                    gobj = this._layer3Obj.addChild(child);
+                    break;
+                case GRoot.LAYER_4:
+                    gobj = this._layer4Obj.addChild(child);
+                    break;
+            }
+            return gobj;
+        }
+        DeleteUI(child, layer, dispose = false) {
+            var gobj;
+            switch (layer) {
+                case GRoot.LAYER_1:
+                    gobj = this._layer1Obj.removeChild(child, dispose);
+                    break;
+                case GRoot.LAYER_2:
+                    gobj = this._layer2Obj.removeChild(child, dispose);
+                    break;
+                case GRoot.LAYER_3:
+                    gobj = this._layer3Obj.removeChild(child, dispose);
+                    break;
+                case GRoot.LAYER_4:
+                    gobj = this._layer4Obj.removeChild(child, dispose);
+                    break;
+            }
+            return gobj;
         }
         showWindow(win) {
             this.addChild(win);
@@ -8491,6 +8543,10 @@ window.fairygui = window.fgui;
         }
     }
     GRoot.contentScaleLevel = 0;
+    GRoot.LAYER_1 = 1;
+    GRoot.LAYER_2 = 2;
+    GRoot.LAYER_3 = 3;
+    GRoot.LAYER_4 = 4;
     fgui.GRoot = GRoot;
 })(fgui || (fgui = {}));
 

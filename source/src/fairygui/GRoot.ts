@@ -11,6 +11,16 @@ namespace fgui {
         private _defaultTooltipWin: GObject;
         private _checkPopups: boolean;
 
+        private _layer1Obj:GComponent;
+        private _layer2Obj:GComponent;
+        private _layer3Obj:GComponent;
+        private _layer4Obj:GComponent;
+
+        public static LAYER_1:number = 1;
+        public static LAYER_2:number = 2;
+        public static LAYER_3:number = 3;
+        public static LAYER_4:number = 4;
+
         private static _inst: GRoot;
 
         public static get inst(): GRoot {
@@ -28,6 +38,69 @@ namespace fgui {
             this._popupStack = [];
             this._justClosedPopups = [];
             this.displayObject.once(Laya.Event.DISPLAY, this, this.__addedToStage);
+
+            this._layer1Obj = this.createLayerNode("Layer_1");
+			this._layer2Obj = this.createLayerNode("Layer_2");
+			this._layer3Obj = this.createLayerNode("Layer_3");
+			this._layer4Obj = this.createLayerNode("Layer_4");
+        }
+
+        private createLayerNode(name:string):GComponent {
+            var layerObj:GComponent = new GComponent();
+            layerObj.name = name;
+            this.addChild1(layerObj);
+            return layerObj;
+        }
+
+        private addChild1(child:GComponent):void{
+            super.addChild(child);
+        }
+
+        /**
+         * AddToUI
+         */
+        public AddToUI(child:GComponent, layer:number):GObject {
+            if(child == null || layer < 1 || layer > 4){
+                console.error("AddToUI error");
+            }
+            var gobj:GObject;
+            switch(layer){
+                case GRoot.LAYER_1:
+                    gobj = this._layer1Obj.addChild(child);
+                    break;
+                case GRoot.LAYER_2:
+                    gobj = this._layer2Obj.addChild(child);
+                    break;
+                case GRoot.LAYER_3:
+                    gobj = this._layer3Obj.addChild(child);
+                    break;
+                case GRoot.LAYER_4:
+                    gobj = this._layer4Obj.addChild(child);
+                    break;
+            }
+            return gobj;
+        }
+
+        /**
+         * DeleteUI
+         */
+        public DeleteUI(child:GComponent, layer:number, dispose:boolean = false) {
+            var gobj:GObject;
+			switch(layer){
+				case GRoot.LAYER_1:
+					gobj = this._layer1Obj.removeChild(child, dispose);
+					break;
+				case GRoot.LAYER_2:
+					gobj = this._layer2Obj.removeChild(child, dispose);
+					break;
+				case GRoot.LAYER_3:
+					gobj = this._layer3Obj.removeChild(child, dispose)
+					break;
+				case GRoot.LAYER_4:
+					gobj = this._layer4Obj.removeChild(child, dispose);
+					break;
+			}
+			return gobj;
         }
 
         public showWindow(win: Window): void {
