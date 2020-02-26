@@ -14474,11 +14474,17 @@ window.fairygui = window.fgui;
                 this.markChanged(1);
             }
         }
+        get width() {
+            return this.get_width();
+        }
         set height(value) {
             if (this["_height"] !== value) {
                 super.set_height(value);
                 this.markChanged(1);
             }
+        }
+        get height() {
+            return this.get_height();
         }
         get texture() {
             return this._source;

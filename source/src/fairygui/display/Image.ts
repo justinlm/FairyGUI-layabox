@@ -28,11 +28,19 @@ namespace fgui {
             }
         }
 
+        public get width():number{
+            return this.get_width();
+        }
+
         public set height(value: number) {
             if (this["_height"] !== value) {
                 super.set_height(value);
                 this.markChanged(1);
             }
+        }
+
+        public get height(): number{
+            return this.get_height();
         }
 
         public get texture(): Laya.Texture {
